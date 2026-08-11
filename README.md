@@ -139,19 +139,21 @@ web service and the database together.
 3. Fill in the one value it asks for: **`DEVELOPER_PASSWORD`**. Pick something
    long — it is the password for the only account that can see every ticket.
 4. Click **Apply** and wait for the first deploy.
-5. Open the service's **Shell** tab and run it once:
+5. Open the service URL and sign in as `DEVELOPER_EMAIL` with that password.
 
-   ```bash
-   npm run db:setup
-   ```
-
-   That creates Dinesh's account. The tables themselves are already there —
-   the server applies the schema on every boot.
-
-6. Open the service URL and sign in.
+There is no setup command to run. The server creates the tables and Dinesh's
+account on startup, which matters because Render's free plan gives you no shell
+to run one from.
 
 Deploying again later needs no extra steps: pushing to the default branch
 rebuilds, re-applies the schema harmlessly, and keeps all existing data.
+
+### Forgotten the developer password?
+
+Change `DEVELOPER_PASSWORD` in the service's **Environment** settings and save.
+Render restarts the service, and the new password takes effect — the account is
+reconciled against these environment variables on every boot. Changing
+`DEVELOPER_EMAIL` renames the existing account rather than creating a second one.
 
 ### What makes it production-ready
 
@@ -166,6 +168,9 @@ rebuilds, re-applies the schema harmlessly, and keeps all existing data.
   container filesystem on every deploy, so anything written to a folder is
   gone the next time you ship. Storing them in the database also means one
   backup covers everything.
+- **The developer account is created on boot** from `DEVELOPER_EMAIL` and
+  `DEVELOPER_PASSWORD`, so a fresh deploy is signed into straight away and a
+  forgotten password is recovered by editing an environment variable.
 - **`/healthz`** runs a real query, so Render only routes traffic to an
   instance that can actually reach its database.
 - **SIGTERM is handled**, so a redeploy finishes in-flight requests and closes
@@ -177,6 +182,10 @@ Render's free web services sleep after 15 minutes of inactivity, so the first
 request after a quiet spell takes a few seconds to wake up. The free database
 also expires after 90 days — move both to a paid plan if the beta runs longer
 than that.
+
+The free plan also has no **Shell** tab, which is why nothing here depends on
+running a command against the deployed instance. Everything the app needs is
+done at startup or through environment variables.
 
 ---
 

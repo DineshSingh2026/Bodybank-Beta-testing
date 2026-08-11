@@ -4,49 +4,34 @@
  *
  *   npm run db:setup
  *
- * Safe to run as often as you like: it creates only what is missing and never
- * drops a table. Re-running it after changing DEVELOPER_PASSWORD resets that
- * password, which is how you recover a forgotten one.
+ * The server does both of these on startup as well, so this is only a way to
+ * run them by hand and see the result. Safe to run as often as you like: it
+ * creates only what is missing and never drops a table.
  */
 require('dotenv').config();
 const fs = require('fs');
 const path = require('path');
-const bcrypt = require('bcryptjs');
 const db = require('./db');
-
-const DEV_NAME = 'Dinesh Singh';
-const DEV_EMAIL = (process.env.DEVELOPER_EMAIL || 'dinesh@bodybank.fit').trim().toLowerCase();
-const DEV_PASSWORD = process.env.DEVELOPER_PASSWORD;
+const { ensureDeveloper } = require('./ensure-developer');
 
 (async () => {
   try {
-    if (!DEV_PASSWORD || DEV_PASSWORD.length < 8) {
-      throw new Error('Set DEVELOPER_PASSWORD in .env to at least 8 characters first.');
-    }
-
     const sql = fs.readFileSync(path.join(__dirname, '..', 'db', 'schema.sql'), 'utf8');
     await db.query(sql);
     console.log('Tables are in place.');
 
-    const hash = await bcrypt.hash(DEV_PASSWORD, 10);
-    const existing = await db.query(`SELECT id FROM users WHERE lower(email) = $1`, [DEV_EMAIL]);
-
-    if (existing.rowCount) {
-      await db.query(`UPDATE users SET name = $1, password = $2, role = 'developer' WHERE id = $3`, [
-        DEV_NAME, hash, existing.rows[0].id,
-      ]);
-      console.log('\nDeveloper account updated:');
-    } else {
-      await db.query(
-        `INSERT INTO users (name, email, password, role) VALUES ($1, $2, $3, 'developer')`,
-        [DEV_NAME, DEV_EMAIL, hash]
-      );
-      console.log('\nDeveloper account created:');
+    const result = await ensureDeveloper();
+    if (result.status === 'skipped') {
+      throw new Error('Set DEVELOPER_PASSWORD in .env to at least 8 characters first.');
+    }
+    if (result.status === 'conflict') {
+      throw new Error(`${result.email} is already used by a tester account.`);
     }
 
-    console.log('  Email:    ' + DEV_EMAIL);
-    console.log('  Password: ' + DEV_PASSWORD);
-    console.log('\nSign in as Dinesh and add tester accounts from the Testers page.');
+    console.log('\nSign in as the developer with:');
+    console.log('  Email:    ' + result.email);
+    console.log('  Password: ' + process.env.DEVELOPER_PASSWORD);
+    console.log('\nThen add tester accounts from the Testers page.');
     await db.pool.end();
     process.exit(0);
   } catch (err) {

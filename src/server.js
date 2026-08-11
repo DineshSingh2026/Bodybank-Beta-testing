@@ -8,6 +8,7 @@ const db = require('./db');
 const asyncRoute = require('./async');
 const { readUser, requireLogin } = require('./auth');
 const { getFile } = require('./upload');
+const { ensureDeveloper } = require('./ensure-developer');
 const constants = require('./constants');
 const authRoutes = require('./routes/auth');
 const ticketRoutes = require('./routes/tickets');
@@ -107,6 +108,7 @@ async function migrate() {
 (async () => {
   try {
     await migrate();
+    await ensureDeveloper();
   } catch (err) {
     console.error('Could not prepare the database:', err.message);
     process.exit(1);

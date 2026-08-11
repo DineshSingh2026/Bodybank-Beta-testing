@@ -18,8 +18,9 @@ services:
       # Render generates this on first deploy and keeps it stable afterwards.
       - key: JWT_SECRET
         generateValue: true
-      # Set this in the Render dashboard, then run "npm run db:setup" once from
-      # the service shell to create Dinesh's account.
+      # Render asks for the password when you apply the blueprint. The account
+      # is created from these two on startup, so nothing else is needed; the
+      # free plan has no shell to run a setup command from.
       - key: DEVELOPER_EMAIL
         value: dinesh@bodybank.fit
       - key: DEVELOPER_PASSWORD
