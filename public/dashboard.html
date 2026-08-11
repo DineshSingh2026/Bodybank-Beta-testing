@@ -10,27 +10,53 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/css/app.css">
 </head>
-<body>
-  <header class="topbar" id="topbar"></header>
+<body class="app">
+  <header class="sidebar" id="topbar"></header>
 
   <main class="page">
     <div class="page-head">
       <div>
+        <div class="crumb">bodybank.fit beta</div>
         <h1 id="greeting">My tickets</h1>
-        <p>Everything you have reported on bodybank.fit.</p>
+        <p id="subhead">Everything you have reported, and what is waiting on you.</p>
       </div>
-      <a class="btn btn-primary btn-lg" href="/report.html">+ Report an issue</a>
+      <a class="btn btn-primary btn-lg" href="/report.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+        Report an issue
+      </a>
     </div>
 
     <div id="retest-callout"></div>
 
-    <section class="stats" id="stats"></section>
+    <section class="stats" id="stats" aria-label="Ticket counts"></section>
+
+    <div class="section-title">
+      <h2>Overview</h2>
+      <span class="aside">Across all of your tickets</span>
+    </div>
+
+    <div class="cols cols-2">
+      <section class="card">
+        <div class="card-head"><h2>Where your tickets stand</h2></div>
+        <div class="card-body"><div id="status-chart"></div></div>
+      </section>
+
+      <section class="card">
+        <div class="card-head"><h2>By priority</h2></div>
+        <div class="card-body"><div id="priority-chart"></div></div>
+      </section>
+    </div>
+
+    <div class="section-title">
+      <h2>Your tickets</h2>
+      <span class="aside" id="result-count"></span>
+    </div>
 
     <section class="card">
       <div class="card-head">
-        <h2>Your tickets</h2>
+        <div class="tabs" id="tabs"></div>
         <div class="filters">
-          <input type="search" id="search" placeholder="Search your tickets">
+          <input type="search" id="search" placeholder="Search your tickets" aria-label="Search your tickets">
         </div>
       </div>
       <div id="list"></div>

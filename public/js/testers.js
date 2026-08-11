@@ -19,21 +19,21 @@ async function loadTesters() {
   const list = document.getElementById('list');
 
   if (!testers.length) {
-    list.innerHTML = `<div class="empty"><strong>No testers yet</strong>
+    list.innerHTML = `<div class="empty">${icon('people')}<strong>No testers yet</strong>
       Add the first one above to start collecting bug reports.</div>`;
     return;
   }
 
-  const cols = 'minmax(0,1fr) minmax(0,1.2fr) 110px 110px';
+  const cols = 'minmax(0,1fr) minmax(0,1.2fr) 90px 110px';
   list.innerHTML = `
     <div class="tbl-head" style="--cols:${cols}">
       <span>Name</span><span>Email</span><span>Tickets</span><span>Added</span>
     </div>` +
     testers.map((t) => `
       <div class="tbl-row" style="--cols:${cols}">
-        <span class="title">${escapeHtml(t.name)}</span>
+        <span class="who">${avatar(t.name, 'sm')}<span class="title">${escapeHtml(t.name)}</span></span>
         <span class="meta">${escapeHtml(t.email)}</span>
-        <span class="meta">${t.ticket_count}</span>
+        <span><span class="chip chip-mono">${t.ticket_count}</span></span>
         <span class="meta">${formatDate(t.created_at)}</span>
       </div>`).join('');
 }

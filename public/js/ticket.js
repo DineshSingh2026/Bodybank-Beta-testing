@@ -125,8 +125,10 @@ function render({ ticket, comments, history }) {
           <div class="card-head"><h2>Details</h2></div>
           <div class="card-body">
             <dl class="facts">
-              <div><dt>Tester</dt><dd>${escapeHtml(ticket.tester_name)}</dd></div>
-              <div><dt>Assigned to</dt><dd>${escapeHtml(ticket.developer_name || 'Unassigned')}</dd></div>
+              <div><dt>Reported by</dt><dd class="who" style="display:flex;align-items:center;gap:7px;justify-content:flex-end;">
+                ${avatar(ticket.tester_name, 'sm')}${escapeHtml(ticket.tester_name)}</dd></div>
+              <div><dt>Assigned to</dt><dd class="who" style="display:flex;align-items:center;gap:7px;justify-content:flex-end;">
+                ${ticket.developer_name ? avatar(ticket.developer_name, 'sm') + escapeHtml(ticket.developer_name) : 'Unassigned'}</dd></div>
               <div><dt>Module</dt><dd>${escapeHtml(ticket.module)}</dd></div>
               <div><dt>Issue type</dt><dd>${escapeHtml(ticket.issue_type)}</dd></div>
               <div><dt>Device</dt><dd class="mono">${escapeHtml(ticket.device || '—')}</dd></div>
@@ -157,13 +159,16 @@ function renderComments(comments) {
   if (!comments.length) return '<p class="block none" style="margin:0;">No comments yet.</p>';
   return comments.map((c) => `
     <div class="comment">
-      <div class="who">
-        <strong>${escapeHtml(c.author)}</strong><span class="role">${c.role}</span>
-        <time>${formatDateTime(c.created_at)}</time>
+      ${avatar(c.author)}
+      <div class="comment-body">
+        <div class="who">
+          <strong>${escapeHtml(c.author)}</strong><span class="role">${c.role}</span>
+          <time>${formatDateTime(c.created_at)}</time>
+        </div>
+        <p>${escapeHtml(c.comment)}</p>
+        ${c.screenshot ? `<a href="${c.screenshot}" target="_blank" rel="noopener">
+          <img class="shot" src="${c.screenshot}" alt="Comment screenshot" style="max-width:280px;"></a>` : ''}
       </div>
-      <p>${escapeHtml(c.comment)}</p>
-      ${c.screenshot ? `<a href="${c.screenshot}" target="_blank" rel="noopener">
-        <img class="shot" src="${c.screenshot}" alt="Comment screenshot" style="max-width:280px;"></a>` : ''}
     </div>`).join('');
 }
 
@@ -200,8 +205,8 @@ function renderActions(ticket) {
     if (ticket.status === 'RETEST') {
       html = callout(`${ticket.ticket_number} is ready for retest`,
         'Install the latest build, try the steps again, then pass or fail the fix.',
-        `<button class="btn btn-primary" data-act="pass">✅ Pass</button>
-         <button class="btn btn-danger" data-act="fail">❌ Fail</button>`);
+        `<button class="btn btn-success" data-act="pass">${icon('check')} Pass — it is fixed</button>
+         <button class="btn btn-danger" data-act="fail">${icon('alert')} Fail — still broken</button>`);
     } else if (ticket.status === 'CLOSED') {
       html = callout('This ticket is closed',
         'You passed the retest. Nothing left to do here.', '', 'callout-done');
@@ -220,10 +225,18 @@ function renderActions(ticket) {
   });
 }
 
+const CALLOUT_ICON = {
+  '': 'bell',
+  'callout-info': 'clock',
+  'callout-done': 'check',
+  'callout-alert': 'alert',
+};
+
 function callout(title, sub, buttons, variant) {
   return `<div class="callout ${variant || ''}">
+    <span class="callout-icon">${icon(CALLOUT_ICON[variant || ''] || 'bell')}</span>
     <div class="msg">${escapeHtml(title)}<small>${escapeHtml(sub)}</small></div>
-    <div class="btn-row">${buttons}</div>
+    ${buttons ? `<div class="btn-row">${buttons}</div>` : ''}
   </div>`;
 }
 
