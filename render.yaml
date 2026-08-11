@@ -1,0 +1,32 @@
+# Render blueprint — create everything in one step with "New > Blueprint"
+# and point it at this repository.
+services:
+  - type: web
+    name: bodybank-beta-tracker
+    runtime: node
+    plan: free
+    buildCommand: npm ci --omit=dev
+    startCommand: npm start
+    healthCheckPath: /healthz
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        fromDatabase:
+          name: bodybank-tracker-db
+          property: connectionString
+      # Render generates this on first deploy and keeps it stable afterwards.
+      - key: JWT_SECRET
+        generateValue: true
+      # Set this in the Render dashboard, then run "npm run db:setup" once from
+      # the service shell to create Dinesh's account.
+      - key: DEVELOPER_EMAIL
+        value: dinesh@bodybank.fit
+      - key: DEVELOPER_PASSWORD
+        sync: false
+
+databases:
+  - name: bodybank-tracker-db
+    databaseName: bodybank_tracker
+    user: bodybank
+    plan: free

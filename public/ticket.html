@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ticket · bodybank beta</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/app.css">
+</head>
+<body>
+  <header class="topbar" id="topbar"></header>
+
+  <main class="page">
+    <a class="btn btn-ghost" id="back" href="/dashboard.html" style="margin-bottom: 12px;">← Back to tickets</a>
+
+    <div id="message" class="alert"></div>
+    <div id="banner"></div>
+    <div id="content"></div>
+  </main>
+
+  <!-- Failed retest: what is still wrong -->
+  <div class="modal-backdrop" id="fail-modal" hidden>
+    <div class="modal">
+      <h2>What is still wrong?</h2>
+      <p class="sub">This reopens the ticket and sends your notes back to Dinesh.</p>
+      <div id="fail-error" class="alert"></div>
+      <div class="field">
+        <label for="fail-comment">Comment</label>
+        <textarea id="fail-comment" placeholder="The timer still resets, but only on the second session."></textarea>
+      </div>
+      <div class="field">
+        <label for="fail-screenshot">Screenshot <span class="hint">— optional</span></label>
+        <input type="file" id="fail-screenshot" accept="image/*">
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-danger" id="fail-submit">Fail retest &amp; reopen</button>
+        <button class="btn btn-outline" id="fail-cancel">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/common.js"></script>
+  <script src="/js/ticket.js"></script>
+</body>
+</html>

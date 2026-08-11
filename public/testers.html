@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Testers · bodybank beta</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/app.css">
+</head>
+<body>
+  <header class="topbar" id="topbar"></header>
+
+  <main class="page" style="max-width: 860px;">
+    <div class="page-head">
+      <div>
+        <h1>Testers</h1>
+        <p>Create an account for each beta tester and send them the password.</p>
+      </div>
+    </div>
+
+    <div class="card" style="margin-bottom: 20px;">
+      <div class="card-head"><h2>Add a tester</h2></div>
+      <div class="card-body">
+        <div id="message" class="alert"></div>
+        <div class="grid-2">
+          <div class="field">
+            <label for="name">Name</label>
+            <input type="text" id="name" placeholder="Priya Nair">
+          </div>
+          <div class="field">
+            <label for="email">Email</label>
+            <input type="email" id="email" placeholder="priya@example.com">
+          </div>
+        </div>
+        <div class="field">
+          <label for="password">Password <span class="hint">— at least 6 characters</span></label>
+          <input type="text" id="password">
+        </div>
+        <button class="btn btn-primary" id="submit">Add tester</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><h2>Beta testers</h2></div>
+      <div id="list"></div>
+    </div>
+  </main>
+
+  <script src="/js/common.js"></script>
+  <script src="/js/testers.js"></script>
+</body>
+</html>

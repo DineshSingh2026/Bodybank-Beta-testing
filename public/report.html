@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Report an issue · bodybank beta</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/app.css">
+</head>
+<body>
+  <header class="topbar" id="topbar"></header>
+
+  <main class="page" style="max-width: 760px;">
+    <div class="page-head">
+      <div>
+        <h1>Report an issue</h1>
+        <p>Goes straight to Dinesh, filed under your name.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-body">
+        <div id="message" class="alert"></div>
+
+        <div class="form-section">What went wrong</div>
+
+        <div class="field">
+          <label for="title">Issue title</label>
+          <input type="text" id="title" placeholder="Workout timer resets when the screen locks">
+        </div>
+
+        <div class="grid-2">
+          <div class="field">
+            <label for="module">Module</label>
+            <select id="module"></select>
+          </div>
+          <div class="field">
+            <label for="issue_type">Issue type</label>
+            <select id="issue_type"></select>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="priority">Priority</label>
+          <select id="priority"></select>
+        </div>
+
+        <div class="field">
+          <label for="description">Description</label>
+          <textarea id="description" placeholder="What happened, in a sentence or two."></textarea>
+        </div>
+
+        <div class="form-section">How to see it</div>
+
+        <div class="field">
+          <label for="steps">Steps to reproduce</label>
+          <textarea id="steps" placeholder="1. Open Workout&#10;2. Start a session&#10;3. Lock the screen"></textarea>
+        </div>
+
+        <div class="grid-2">
+          <div class="field">
+            <label for="expected_result">Expected result</label>
+            <textarea id="expected_result" placeholder="Timer keeps running."></textarea>
+          </div>
+          <div class="field">
+            <label for="actual_result">Actual result</label>
+            <textarea id="actual_result" placeholder="Timer goes back to 00:00."></textarea>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="screenshot">Screenshot <span class="hint">— optional, up to 8&nbsp;MB</span></label>
+          <input type="file" id="screenshot" accept="image/*">
+        </div>
+
+        <div class="form-section">Your setup</div>
+
+        <div class="grid-2">
+          <div class="field">
+            <label for="device">Device</label>
+            <input type="text" id="device" placeholder="iPhone 13, iOS 18.2">
+          </div>
+          <div class="field">
+            <label for="app_version">App version</label>
+            <input type="text" id="app_version" placeholder="1.4.2 (build 88)">
+          </div>
+        </div>
+
+        <div class="btn-row" style="margin-top: 8px;">
+          <button class="btn btn-primary btn-lg" id="submit">Report issue</button>
+          <a class="btn btn-outline btn-lg" href="/dashboard.html">Cancel</a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="/js/common.js"></script>
+  <script src="/js/report.js"></script>
+</body>
+</html>

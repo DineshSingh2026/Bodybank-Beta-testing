@@ -1,0 +1,15 @@
+node_modules/
+.env
+.env.*
+!.env.example
+
+# Screenshots are stored in PostgreSQL; this folder is only left over from
+# older local runs.
+uploads/
+
+npm-debug.log*
+*.log
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

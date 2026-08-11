@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>All tickets · bodybank beta</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/app.css">
+</head>
+<body>
+  <header class="topbar" id="topbar"></header>
+
+  <main class="page">
+    <div class="page-head">
+      <div>
+        <h1>All tickets</h1>
+        <p>Everything the beta testers have reported on bodybank.fit.</p>
+      </div>
+    </div>
+
+    <section class="stats" id="stats"></section>
+
+    <section class="card">
+      <div class="card-head">
+        <h2>Tickets</h2>
+        <div class="filters">
+          <input type="search" id="search" placeholder="Search title, ticket, tester">
+          <select id="module"></select>
+          <select id="priority"></select>
+        </div>
+      </div>
+      <div id="list"></div>
+    </section>
+  </main>
+
+  <script src="/js/common.js"></script>
+  <script src="/js/developer.js"></script>
+</body>
+</html>
