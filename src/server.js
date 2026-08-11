@@ -58,10 +58,13 @@ app.get('/files/:id', requireLogin, asyncRoute(async (req, res) => {
 
 app.use(express.static(path.join(__dirname, '..', 'public'), {
   etag: true,
-  // HTML must be revalidated so a deploy is picked up immediately; the assets
-  // beside it can be held for a while.
+  // The markup, styles, and scripts are revalidated on every request so a
+  // deploy is never served as new HTML against a stale stylesheet. ETags make
+  // that a 304 in the normal case, so it costs a round trip and no body.
+  // Images and fonts change far less often and are held for a day.
   setHeaders: (res, filePath) => {
-    res.setHeader('Cache-Control', filePath.endsWith('.html') ? 'no-cache' : 'public, max-age=3600');
+    const longLived = /\.(png|jpe?g|gif|webp|svg|ico|woff2?)$/i.test(filePath);
+    res.setHeader('Cache-Control', longLived ? 'public, max-age=86400' : 'no-cache');
   },
 }));
 
